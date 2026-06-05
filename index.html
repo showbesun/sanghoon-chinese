@@ -33,26 +33,27 @@ body {
 /* ── Cover ── */
 .cover {
   background: var(--bg);
-  padding: 36px 24px 28px;
+  padding: 20px 24px 18px;
   text-align: center;
 }
 .cover-ryan {
-  width: 210px;
-  height: 210px;
+  width: 180px;
+  height: 180px;
   object-fit: contain;
   display: block;
-  margin: 0 auto 20px;
+  margin: 0 auto 12px;
 }
 .cover-title {
   color: var(--text);
   display: inline-flex;
   align-items: flex-end;
-  gap: 6px;
+  gap: 5px;
 }
 .title-korean {
-  font-size: 1.9rem;
+  font-size: 1.7rem;
   line-height: 1;
-  padding-bottom: 6px;
+  padding-bottom: 5px;
+  letter-spacing: -0.02em;
 }
 .title-zhongwen-wrap {
   display: flex;
@@ -61,17 +62,17 @@ body {
   line-height: 1;
 }
 .title-pinyin {
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   font-family: 'Noto Sans TC', sans-serif;
   font-weight: 400;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: var(--text-mid);
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 .title-zhongwen {
   font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
   font-weight: 700;
-  font-size: 2.9rem;
+  font-size: 2.6rem;
   letter-spacing: -0.02em;
   color: var(--text);
   line-height: 1;
@@ -79,7 +80,8 @@ body {
 .cover-stats {
   color: var(--text-light);
   font-size: 0.72rem;
-  margin-top: 10px;
+  margin-top: 8px;
+  letter-spacing: 0.02em;
 }
 .cover-stats .stat-num {
   font-family: var(--font-ui);
@@ -252,7 +254,7 @@ body {
   letter-spacing: 0.04em;
 }
 .fc-card-korean {
-  font-size: 1.05rem;
+  font-size: 1.8rem;
   color: var(--text-mid);
 }
 .fc-deck-wrap {
@@ -413,11 +415,11 @@ body {
         <div class="fc-inner" id="fcInner">
           <div class="fc-face fc-front">
             <div class="fc-card-date" id="fcFrontDate"></div>
-            <div class="fc-card-chinese" id="fcFrontChinese"></div>
+            <div class="fc-card-korean" id="fcFrontKorean"></div>
           </div>
           <div class="fc-face fc-back">
+            <div class="fc-card-chinese" id="fcBackChinese"></div>
             <div class="fc-card-pinyin" id="fcBackPinyin"></div>
-            <div class="fc-card-korean" id="fcBackKorean"></div>
           </div>
         </div>
       </div>
@@ -550,7 +552,7 @@ function renderFC() {
   if (!deck.length) {
     prog.textContent = '카드가 없어요';
     document.getElementById('fcFrontChinese').textContent = '—';
-    ['fcFrontDate','fcBackPinyin','fcBackKorean'].forEach(id => {
+    ['fcFrontDate','fcFrontKorean','fcBackChinese','fcBackPinyin'].forEach(id => {
       document.getElementById(id).textContent = '';
     });
     return;
@@ -558,9 +560,9 @@ function renderFC() {
   const v = deck[deckIndex];
   prog.textContent = `${deckIndex + 1} / ${deck.length}`;
   document.getElementById('fcFrontDate').textContent = `${fmtDate(v.date)}  ·  Day ${dayNum(v.date)}`;
-  document.getElementById('fcFrontChinese').textContent = v.chinese;
+  document.getElementById('fcFrontKorean').textContent = v.korean;
+  document.getElementById('fcBackChinese').textContent = v.chinese;
   document.getElementById('fcBackPinyin').textContent = v.pinyin;
-  document.getElementById('fcBackKorean').textContent = v.korean;
   flipped = false;
   document.getElementById('fcInner').classList.remove('flipped');
 }
