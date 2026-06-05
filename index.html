@@ -94,13 +94,20 @@ body {
 .nav {
   display: flex;
   background: #FFFFFF;
-  position: sticky;
-  top: 0;
+  width: 100%;
   z-index: 100;
   padding: 8px 12px;
   gap: 6px;
   border-bottom: 1px solid rgba(47,61,97,0.06);
   box-shadow: 0 2px 8px rgba(47,61,97,0.05);
+}
+.nav.stuck {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 480px;
+  width: 100%;
 }
 .nav-btn {
   flex: 1;
@@ -156,7 +163,8 @@ body {
   letter-spacing: 0.01em;
 }
 .log-chinese {
-  font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 700;
   font-size: 1.75rem;
   color: var(--text);
   line-height: 1.2;
@@ -240,7 +248,8 @@ body {
   margin-bottom: 10px;
 }
 .fc-card-chinese {
-  font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 700;
   font-size: clamp(1.8rem, 8vw, 2.6rem);
   color: var(--text);
   line-height: 1.2;
@@ -460,13 +469,15 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-const KEY = 'sanghun_1il1zhongwen_v1';
+const KEY = 'sanghun_1il1zhongwen_v3';
 const START_DATE = '2026-06-01';
 
 const SEED = [
   { id: 1, date: '2026-06-01', chinese: '生日快樂', pinyin: 'shēng rì kuài lè', korean: '생일 축하해', note: '상훈이 생일' },
   { id: 2, date: '2026-06-02', chinese: '不要生氣', pinyin: 'bú yào shēng qì', korean: '화내지 마', note: '' },
   { id: 3, date: '2026-06-03', chinese: '對不起', pinyin: 'duì bù qǐ', korean: '미안해', note: '' },
+  { id: 4, date: '2026-06-04', chinese: '我愛你', pinyin: 'wǒ ài nǐ', korean: '사랑해', note: '' },
+  { id: 5, date: '2026-06-05', chinese: '我也愛你', pinyin: 'wǒ yě ài nǐ', korean: '나도 사랑해', note: '' },
 ];
 
 let vocab = JSON.parse(localStorage.getItem(KEY) || 'null');
@@ -626,6 +637,21 @@ function showToast(msg) {
 
 renderTimeline();
 buildDeck();
+
+// Stick nav after cover scrolls out
+(function() {
+  const cover = document.querySelector('.cover');
+  const nav = document.querySelector('.nav');
+  const spacer = document.createElement('div');
+  spacer.style.cssText = 'display:none;height:' + nav.offsetHeight + 'px';
+  nav.after(spacer);
+  new IntersectionObserver(([e]) => {
+    const stuck = !e.isIntersecting;
+    nav.classList.toggle('stuck', stuck);
+    spacer.style.display = stuck ? 'block' : 'none';
+  }, { threshold: 0 }).observe(cover);
+})();
+
 </script>
 </body>
 </html>
